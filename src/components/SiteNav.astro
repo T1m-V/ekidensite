@@ -1,0 +1,27 @@
+<nav>
+  <a class="nav-logo" href={`${import.meta.env.BASE_URL}`}>
+    Rotterdam <span>Ekiden</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href={`${import.meta.env.BASE_URL}`} id="nav-home">Home</a></li>
+    <li><a href={`${import.meta.env.BASE_URL}info/`} id="nav-info">Info</a></li>
+    <li><a href={`${import.meta.env.BASE_URL}inschrijven/`} id="nav-inschrijven">Inschrijven</a></li>
+    <li><a href={`${import.meta.env.BASE_URL}business/`} id="nav-business">Business Run</a></li>
+    <li><a href={`${import.meta.env.BASE_URL}uitslagen/`} id="nav-uitslagen">Uitslagen</a></li>
+    <li><a href={`${import.meta.env.BASE_URL}reglement/`} id="nav-reglement">Reglement</a></li>
+    <li><a href={`${import.meta.env.BASE_URL}faq/`} id="nav-faq">FAQ</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href={`${import.meta.env.BASE_URL}`}>Home</a>
+  <a href={`${import.meta.env.BASE_URL}info/`}>Info</a>
+  <a href={`${import.meta.env.BASE_URL}inschrijven/`}>Inschrijven</a>
+  <a href={`${import.meta.env.BASE_URL}business/`}>Business Run</a>
+  <a href={`${import.meta.env.BASE_URL}uitslagen/`}>Uitslagen</a>
+  <a href={`${import.meta.env.BASE_URL}reglement/`}>Wedstrijdreglement</a>
+  <a href={`${import.meta.env.BASE_URL}faq/`}>FAQ</a>
+</div>

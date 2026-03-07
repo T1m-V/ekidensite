@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotterdam Ekiden 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a0e1a;
+    --navy2: #111827;
+    --orange: #f97316;
+    --orange2: #ea580c;
+    --cream: #fdf6ee;
+    --white: #ffffff;
+    --muted: #6b7280;
+    --card: #161d2e;
+    --border: rgba(249,115,22,0.18);
+    --radius: 12px;
+    --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    color: var(--cream);
+    cursor: pointer;
+    line-height: 1;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links {
+    display: flex; gap: 0.2rem;
+    list-style: none;
+  }
+  .nav-links li a, .nav-links li button {
+    color: rgba(253,246,238,0.7);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    background: none; border: none; cursor: pointer;
+    transition: color var(--transition), background var(--transition);
+    white-space: nowrap;
+  }
+  .nav-links li a:hover, .nav-links li button:hover,
+  .nav-links li a.active, .nav-links li button.active {
+    color: var(--orange);
+    background: rgba(249,115,22,0.1);
+  }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--cream);
+    border-radius: 2px;
+    transition: var(--transition);
+  }
+  .mobile-menu {
+    display: none; position: fixed; inset: 60px 0 0 0;
+    background: var(--navy); z-index: 99; padding: 1.5rem;
+    flex-direction: column; gap: 0.5rem; overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a, .mobile-menu button {
+    color: var(--cream); text-decoration: none;
+    font-size: 1.1rem; font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: none; border: none; cursor: pointer;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color var(--transition), background var(--transition);
+  }
+  .mobile-menu a:hover, .mobile-menu button:hover {
+    color: var(--orange);
+    background: rgba(249,115,22,0.08);
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; padding-top: 60px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: calc(100vh - 60px);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 3rem 2rem 4rem;
+    background: var(--navy);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 30%, rgba(249,115,22,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(249,115,22,0.07) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image:
+      linear-gradient(rgba(249,115,22,0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249,115,22,0.6) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  .hero-track {
+    position: absolute; top: 0; right: -5%; width: 60%;
+    height: 100%; opacity: 0.04;
+    background: repeating-linear-gradient(
+      90deg, transparent, transparent 12px,
+      rgba(249,115,22,1) 12px, rgba(249,115,22,1) 14px
+    );
+    transform: skewX(-8deg);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--orange);
+    background: rgba(249,115,22,0.12);
+    padding: 0.35rem 0.9rem; border-radius: 100px;
+    border: 1px solid rgba(249,115,22,0.3);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 13vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero-title span { color: var(--orange); display: block; }
+  .hero-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    letter-spacing: 0.15em;
+    color: rgba(253,246,238,0.5);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-date {
+    font-size: 1.05rem; font-weight: 500;
+    color: rgba(253,246,238,0.75);
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .hero-date::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--orange); }
+  .hero-cta {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.04em;
+    border-radius: 8px; border: none; cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition);
+  }
+  .btn-primary {
+    background: var(--orange); color: white;
+    box-shadow: 0 0 0 0 rgba(249,115,22,0.4);
+  }
+  .btn-primary:hover {
+    background: var(--orange2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(249,115,22,0.35);
+  }
+  .btn-outline {
+    background: transparent; color: var(--cream);
+    border: 1px solid rgba(253,246,238,0.25);
+  }
+  .btn-outline:hover {
+    border-color: var(--orange); color: var(--orange);
+    background: rgba(249,115,22,0.08);
+  }
+  .hero-stats {
+    display: flex; gap: 2.5rem; flex-wrap: wrap;
+    margin-top: 3rem; padding-top: 2rem;
+    border-top: 1px solid rgba(253,246,238,0.1);
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; letter-spacing: 0.05em;
+    line-height: 1; color: var(--orange);
+  }
+  .stat-label {
+    font-size: 0.78rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: rgba(253,246,238,0.5);
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    letter-spacing: 0.04em;
+    line-height: 1; margin-bottom: 0.5rem;
+    color: var(--cream);
+  }
+  .section-title span { color: var(--orange); }
+  .section-lead {
+    font-size: 1.05rem; color: rgba(253,246,238,0.65);
+    max-width: 580px; line-height: 1.7; margin-bottom: 3rem;
+  }
+  .section-label {
+    font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.2em;
+    color: var(--orange); margin-bottom: 0.75rem;
+  }
+  hr.divider {
+    border: none; border-top: 1px solid rgba(253,246,238,0.08);
+    margin: 5rem 0;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: border-color var(--transition), transform var(--transition);
+  }
+  .card:hover {
+    border-color: rgba(249,115,22,0.3);
+    transform: translateY(-3px);
+  }
+  .card-icon {
+    font-size: 2rem; margin-bottom: 1rem;
+  }
+  .card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 0.05em;
+    margin-bottom: 0.5rem; color: var(--cream);
+  }
+  .card p { font-size: 0.9rem; color: rgba(253,246,238,0.6); line-height: 1.7; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+
+  /* ── RUNNERS TABLE ── */
+  .runners-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .runners-table th {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--orange); padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(249,115,22,0.2);
+    text-align: left;
+  }
+  .runners-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.95rem; color: rgba(253,246,238,0.8);
+    vertical-align: middle;
+  }
+  .runners-table tr:hover td { background: rgba(249,115,22,0.04); }
+  .runner-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; color: var(--orange); line-height: 1;
+  }
+  .runner-dist {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; color: var(--cream);
+  }
+
+  /* ── PROGRAM ── */
+  .program-list { display: flex; flex-direction: column; gap: 0; }
+  .program-item {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .program-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 0.05em;
+    color: var(--orange); min-width: 80px;
+    line-height: 1;
+  }
+  .program-event {
+    font-size: 0.95rem; color: rgba(253,246,238,0.8);
+    line-height: 1.5; padding-top: 0.2rem;
+  }
+
+  /* ── PRICE CARDS ── */
+  .price-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: border-color var(--transition);
+    position: relative; overflow: hidden;
+  }
+  .price-card.featured {
+    border-color: var(--orange);
+  }
+  .price-card.featured::before {
+    content: 'AANBEVOLEN';
+    position: absolute; top: 1rem; right: -2.5rem;
+    background: var(--orange); color: white;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+    padding: 0.3rem 3rem;
+    transform: rotate(45deg);
+  }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem; letter-spacing: 0.02em;
+    color: var(--cream); line-height: 1;
+  }
+  .price-amount span { font-size: 1.5rem; color: rgba(253,246,238,0.5); }
+  .price-label { font-size: 0.8rem; color: rgba(253,246,238,0.5); margin-bottom: 1.5rem; }
+  .price-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 0.05em;
+    color: var(--cream); margin-bottom: 0.25rem;
+  }
+  .price-list { list-style: none; margin: 1.5rem 0; }
+  .price-list li {
+    font-size: 0.9rem; color: rgba(253,246,238,0.7);
+    padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: flex-start; gap: 0.6rem;
+  }
+  .price-list li::before { content: '✓'; color: var(--orange); flex-shrink: 0; }
+
+  /* ── FAQ ── */
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .faq-q {
+    width: 100%; background: none; border: none; cursor: pointer;
+    text-align: left; padding: 1.25rem 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.98rem; font-weight: 600;
+    color: var(--cream);
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    transition: color var(--transition);
+  }
+  .faq-q:hover { color: var(--orange); }
+  .faq-q svg { flex-shrink: 0; transition: transform var(--transition); }
+  .faq-item.open .faq-q svg { transform: rotate(45deg); color: var(--orange); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+  }
+  .faq-item.open .faq-a { max-height: 600px; }
+  .faq-a p {
+    font-size: 0.9rem; line-height: 1.75;
+    color: rgba(253,246,238,0.65);
+    padding-bottom: 1.25rem;
+  }
+  .faq-a a { color: var(--orange); }
+
+  /* ── RESULTS ── */
+  .results-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+  .result-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius); padding: 1.1rem 1.5rem;
+    transition: border-color var(--transition);
+  }
+  .result-item:hover { border-color: rgba(249,115,22,0.3); }
+  .result-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; color: var(--orange); letter-spacing: 0.05em;
+  }
+  .result-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .result-link {
+    font-size: 0.82rem; font-weight: 600;
+    color: rgba(253,246,238,0.7);
+    text-decoration: none; padding: 0.35rem 0.85rem;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    transition: all var(--transition);
+  }
+  .result-link:hover {
+    color: var(--orange); border-color: rgba(249,115,22,0.4);
+    background: rgba(249,115,22,0.07);
+  }
+
+  /* ── REGLEMENT ── */
+  .rule-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .rule-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.2em;
+    color: var(--orange); margin-bottom: 0.4rem;
+  }
+  .rule-title {
+    font-size: 1.1rem; font-weight: 600;
+    color: var(--cream); margin-bottom: 0.5rem;
+  }
+  .rule-text {
+    font-size: 0.9rem; color: rgba(253,246,238,0.6); line-height: 1.75;
+  }
+  .rule-text ul { margin-left: 1.2rem; margin-top: 0.5rem; }
+  .rule-text li { margin-bottom: 0.3rem; }
+
+  /* ── INFO TABS ── */
+  .tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .tab-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+    background: transparent; color: rgba(253,246,238,0.6);
+    cursor: pointer; transition: all var(--transition);
+  }
+  .tab-btn:hover { color: var(--orange); border-color: rgba(249,115,22,0.3); }
+  .tab-btn.active { background: var(--orange); color: white; border-color: var(--orange); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── BEREIKBAARHEID ── */
+  .transport-card {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius); padding: 1.5rem;
+  }
+  .transport-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; color: var(--cream); margin-bottom: 0.8rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .transport-text {
+    font-size: 0.9rem; color: rgba(253,246,238,0.65); line-height: 1.7;
+  }
+  .transport-text ul { margin-left: 1.2rem; margin-top: 0.5rem; }
+  .transport-text li { margin-bottom: 0.4rem; }
+  .transport-text a { color: var(--orange); }
+
+  /* ── VRIJWILLIGERS ── */
+  .vol-list { list-style: none; margin-top: 0.75rem; }
+  .vol-list li {
+    font-size: 0.9rem; color: rgba(253,246,238,0.7);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .vol-list li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+    padding: 4rem 2rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px; background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  }
+  .page-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .page-hero .section-label { margin-bottom: 0.5rem; }
+  .page-hero .section-title { margin-bottom: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy2);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 0.08em;
+    color: var(--cream); margin-bottom: 1rem;
+  }
+  .footer-logo span { color: var(--orange); }
+  .footer-links {
+    display: flex; gap: 1.5rem; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .footer-links a {
+    font-size: 0.85rem; color: rgba(253,246,238,0.5);
+    text-decoration: none; transition: color var(--transition);
+  }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-social { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; }
+  .social-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(253,246,238,0.6);
+    text-decoration: none; font-size: 1.1rem;
+    transition: all var(--transition);
+  }
+  .social-btn:hover {
+    background: rgba(249,115,22,0.15);
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .footer-copy {
+    font-size: 0.8rem; color: rgba(253,246,238,0.3);
+  }
+
+  /* ── ABOUT SECTION ── */
+  .about-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-big-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(6rem, 12vw, 10rem);
+    line-height: 0.85;
+    color: rgba(249,115,22,0.12);
+    letter-spacing: 0.04em;
+    user-select: none;
+    position: relative;
+  }
+  .about-badge {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(249,115,22,0.4);
+  }
+  .about-badge .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: white; line-height: 1;
+  }
+  .about-badge .lbl {
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+  }
+  .about-text p {
+    font-size: 0.95rem; color: rgba(253,246,238,0.7);
+    line-height: 1.8; margin-bottom: 1rem;
+  }
+  .about-text p:last-child { margin-bottom: 0; }
+
+  /* ── TAGS / BADGES ── */
+  .badge {
+    display: inline-block;
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    background: rgba(249,115,22,0.15);
+    color: var(--orange);
+    border: 1px solid rgba(249,115,22,0.3);
+  }
+
+  /* ── ANIMATION ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-visual { display: none; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero { padding: 2rem 1.25rem 3rem; }
+    .section { padding: 3.5rem 1.25rem; }
+    .page-hero { padding: 3rem 1.25rem 2.5rem; }
+    .hero-stats { gap: 1.5rem; }
+    footer { padding: 2.5rem 1.25rem; }
+    .price-card { padding: 1.5rem; }
+    .result-item { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .program-item { gap: 1rem; }
+    .program-time { min-width: 65px; font-size: 1.3rem; }
+  }
+  @media (max-width: 480px) {
+    .hero-cta { flex-direction: column; }
+    .btn { justify-content: center; }
+    .tabs { gap: 0.35rem; }
+    .tab-btn { font-size: 0.78rem; padding: 0.45rem 0.9rem; }
+  }
+
+  /* ── NOTICE BOX ── */
+  .notice {
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.25);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    font-size: 0.9rem;
+    color: rgba(253,246,238,0.85);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+  .notice strong { color: var(--orange); }
+
+  /* ── PARTNERS ── */
+  .partners-row {
+    display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center;
+  }
+  .partner-item {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius); padding: 1.25rem 2rem;
+    color: rgba(253,246,238,0.6); font-size: 0.9rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    text-decoration: none;
+    transition: all var(--transition);
+  }
+  .partner-item:hover {
+    border-color: rgba(249,115,22,0.3); color: var(--cream);
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    Rotterdam <span>Ekiden</span>
+  </div>
+  <ul class="nav-links">
+    <li><button onclick="showPage('home')" id="nav-home" class="active">Home</button></li>
+    <li><button onclick="showPage('info')" id="nav-info">Info</button></li>
+    <li><button onclick="showPage('inschrijven')" id="nav-inschrijven">Inschrijven</button></li>
+    <li><button onclick="showPage('business')" id="nav-business">Business Run</button></li>
+    <li><button onclick="showPage('uitslagen')" id="nav-uitslagen">Uitslagen</button></li>
+    <li><button onclick="showPage('reglement')" id="nav-reglement">Reglement</button></li>
+    <li><button onclick="showPage('faq')" id="nav-faq">FAQ</button></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── MOBILE MENU ── -->
+<div class="mobile-menu" id="mobileMenu">
+  <button onclick="showPage('home');toggleMenu()">🏠 Home</button>
+  <button onclick="showPage('info');toggleMenu()">ℹ️ Info</button>
+  <button onclick="showPage('inschrijven');toggleMenu()">✍️ Inschrijven</button>
+  <button onclick="showPage('business');toggleMenu()">💼 Business Run</button>
+  <button onclick="showPage('uitslagen');toggleMenu()">🏆 Uitslagen</button>
+  <button onclick="showPage('reglement');toggleMenu()">📋 Wedstrijdreglement</button>
+  <button onclick="showPage('faq');toggleMenu()">❓ FAQ</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-track"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        De Estafette Marathon van Nederland
+      </div>
+      <div class="hero-title">
+        Rotterdam<span>Ekiden</span>
+      </div>
+      <div class="hero-sub">4 Juli 2026 · Kralingse Bos · PAC Rotterdam</div>
+      <div class="hero-date">Vorm een team van 6 en ren samen de marathon</div>
+      <div class="hero-cta">
+        <a href="https://inschrijven.nl/form/2026070409227-nl" target="_blank" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          Schrijf je in
+        </a>
+        <button onclick="showPage('info')" class="btn btn-outline">
+          Meer info →
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">6</span>
+          <span class="stat-label">Lopers per team</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">42.2</span>
+          <span class="stat-label">km totaal</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">4</span>
+          <span class="stat-label">Categorieën</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">2026</span>
+          <span class="stat-label">Editie</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="about-layout reveal">
+        <div class="about-text">
+          <div class="section-label">Over de Ekiden</div>
+          <h2 class="section-title">Meer dan een <span>race</span></h2>
+          <p class="section-lead" style="margin-top:0.75rem;">Een unieke estafetteloop met een rijke Japanse historie — meer dan een eeuw oud.</p>
+          <div class="about-text">
+            <p>De Ekiden vindt zijn oorsprong in Japan, waar lopers razendsnel documenten van stad naar stad brachten door elkaar af te wisselen. Het Japanse woord "Eki" betekent plaats, "Den" staat voor bezorgen.</p>
+            <p>Tijdens de Ekiden wordt het historische pakketje gesymboliseerd door de <strong>Tasuki</strong> — een speciale sjerp die lopers aan elkaar doorgeven. Bij de Ekiden draait alles om samenwerking en sportiviteit.</p>
+            <p>Zes lopers vormen een team en leggen samen de volledige marathonafstand af: 42,195 km. De estafette begint en eindigt op de atletiekbaan van PAC en is geschikt voor lopers van alle niveaus.</p>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div class="about-big-text">EKIDEN</div>
+          <div class="about-badge">
+            <div class="num">42.2</div>
+            <div class="lbl">kilometer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AFSTANDEN -->
+  <section class="section" style="padding-top:0;">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Het parcours</div>
+        <h2 class="section-title">Zes lopers. <span>Één team.</span></h2>
+        <p class="section-lead">Elke loper rent zijn eigen segment. Samen leg je de volledige marathon af.</p>
+      </div>
+      <div class="reveal" style="overflow-x:auto;">
+        <table class="runners-table">
+          <thead>
+            <tr>
+              <th>Loper</th>
+              <th>Afstand</th>
+              <th>Omschrijving</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="runner-num">1</span></td><td><span class="runner-dist">5 km</span></td><td>Startsegment — zet de toon</td></tr>
+            <tr><td><span class="runner-num">2</span></td><td><span class="runner-dist">10 km</span></td><td>Langste segment</td></tr>
+            <tr><td><span class="runner-num">3</span></td><td><span class="runner-dist">5 km</span></td><td>Middensegment</td></tr>
+            <tr><td><span class="runner-num">4</span></td><td><span class="runner-dist">10 km</span></td><td>Langste segment</td></tr>
+            <tr><td><span class="runner-num">5</span></td><td><span class="runner-dist">5 km</span></td><td>Eindsprint voorbereiding</td></tr>
+            <tr><td><span class="runner-num">6</span></td><td><span class="runner-dist">7,195 km</span></td><td>Finishloper — kruis de lijn</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section style="padding: 0 2rem 5rem;">
+    <div class="section-inner">
+      <div class="reveal" style="background: var(--orange); border-radius: 16px; padding: 3rem 2.5rem; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem;">
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">Vroeg-tarief geldt t/m 26 april</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:white;letter-spacing:0.04em;line-height:1.1;">Schrijf nu in voor slechts €132 per team</div>
+        </div>
+        <a href="https://inschrijven.nl/form/2026070409227-nl" target="_blank" class="btn" style="background:white;color:var(--orange);font-weight:700;white-space:nowrap;">
+          Inschrijven →
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: INFO
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-info">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label">Praktische informatie</div>
+      <h1 class="section-title">Info <span>&</span> Programma</h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner">
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('programma')">Programma</button>
+        <button class="tab-btn" onclick="showTab('parcours')">Parcours</button>
+        <button class="tab-btn" onclick="showTab('categorieen')">Categorieën</button>
+        <button class="tab-btn" onclick="showTab('bereikbaarheid')">Bereikbaarheid</button>
+        <button class="tab-btn" onclick="showTab('vrijwilligers')">Vrijwilligers</button>
+        <button class="tab-btn" onclick="showTab('partners')">Partners</button>
+      </div>
+
+      <!-- PROGRAMMA -->
+      <div class="tab-panel active reveal" id="tab-programma">
+        <div class="section-label">Zaterdag 4 juli 2026</div>
+        <h2 class="section-title" style="margin-bottom:2rem;">Dag<span>programma</span></h2>
+        <div class="program-list">
+          <div class="program-item"><div class="program-time">9:00</div><div class="program-event">Opening sportcomplex PAC</div></div>
+          <div class="program-item"><div class="program-time">9:30–12:00</div><div class="program-event">Ophalen startnummers</div></div>
+          <div class="program-item"><div class="program-time">12:00</div><div class="program-event"><strong>Start Rotterdam Ekiden</strong></div></div>
+          <div class="program-item"><div class="program-time">15:00–15:30</div><div class="program-event">Prijsuitreiking mannen, vrouwen en mixed</div></div>
+          <div class="program-item"><div class="program-time">16:00–16:30</div><div class="program-event">Prijsuitreiking Business Teams</div></div>
+          <div class="program-item"><div class="program-time">17:00</div><div class="program-event">Start Barbecue</div></div>
+          <div class="program-item"><div class="program-time">20:00</div><div class="program-event">Sluiting sportcomplex PAC</div></div>
+        </div>
+        <div style="margin-top:2rem;">
+          <button onclick="showPage('faq')" class="btn btn-outline">Vragen? Bekijk de FAQ →</button>
+        </div>
+      </div>
+
+      <!-- PARCOURS -->
+      <div class="tab-panel" id="tab-parcours">
+        <div class="section-label">Routes 2026</div>
+        <h2 class="section-title" style="margin-bottom:1rem;">Het <span>parcours</span></h2>
+        <p style="color:rgba(253,246,238,0.65);font-size:0.95rem;margin-bottom:2rem;line-height:1.7;">
+          Na het enthousiaste onthaal van de nieuwe parcoursen houden we ze ook dit jaar aan. 
+          Er zijn aparte routes voor de 5 km, 10 km en 7,2 km segmenten — allemaal door en rondom het prachtige Kralingse Bos.
+        </p>
+        <div class="notice">
+          <strong>Let op:</strong> Het Langepad langs PAC is onderdeel van het parcours en is <strong>niet beschikbaar</strong> voor verkeer op de wedstrijddag.
+        </div>
+        <div class="grid-3" style="gap:1rem;">
+          <div class="card">
+            <div class="card-icon">🏃</div>
+            <h3>5 km parcours</h3>
+            <p>Gebruikt door lopers 1, 3 en 5. Een compact traject rondom de atletiekbaan en het Kralingse Bos.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏃‍♂️</div>
+            <h3>10 km parcours</h3>
+            <p>Gebruikt door lopers 2 en 4. Een uitgebreider traject met prachtige doorkijkjes langs de Kralingse Plas.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏁</div>
+            <h3>7,2 km parcours</h3>
+            <p>Finishloper (loper 6). Eindigt spectaculair op de atletiekbaan — de hele finishing lap voor het team.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATEGORIEEN -->
+      <div class="tab-panel" id="tab-categorieen">
+        <div class="section-label">Wedstrijdcategorieën</div>
+        <h2 class="section-title" style="margin-bottom:2rem;">Voor <span>iedereen</span></h2>
+        <div class="grid-2" style="gap:1rem;">
+          <div class="card">
+            <div class="card-icon">👔</div>
+            <h3>Business</h3>
+            <p>Teams bestaande uit werknemers van eenzelfde bedrijf of instelling. Inclusief toegang tot het Business Paviljoen.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">💪</div>
+            <h3>Mannen</h3>
+            <p>Teams bestaande uit alleen heren. Recreatieve categorie.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🌸</div>
+            <h3>Vrouwen</h3>
+            <p>Teams bestaande uit alleen dames. Recreatieve categorie.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🤝</div>
+            <h3>Gemengd (Mixed)</h3>
+            <p>Teams bestaande uit minimaal 1 man en 1 vrouw. Recreatieve categorie.</p>
+          </div>
+        </div>
+        <div class="notice" style="margin-top:2rem;">
+          De organisatie behoudt zich het recht voor teams in een andere categorie in te delen als daar aanleiding toe is. Betreffende teams worden hierover ingelicht.
+        </div>
+      </div>
+
+      <!-- BEREIKBAARHEID -->
+      <div class="tab-panel" id="tab-bereikbaarheid">
+        <div class="section-label">Hoe kom ik er?</div>
+        <h2 class="section-title" style="margin-bottom:0.5rem;">Bereik<span>baarheid</span></h2>
+        <p style="color:rgba(253,246,238,0.65);font-size:0.9rem;margin-bottom:2rem;">
+          Atletiekvereniging PAC — Langepad 16, 3062 CJ Rotterdam
+        </p>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="transport-card">
+            <div class="transport-title">🚲 Op de fiets</div>
+            <div class="transport-text">
+              Voor iedereen die dichtbij woont is de fiets het aangewezen vervoersmiddel! We moedigen dit sterk aan.
+            </div>
+          </div>
+          <div class="transport-card">
+            <div class="transport-title">🚌 Openbaar vervoer</div>
+            <div class="transport-text">
+              Kom liefst met het openbaar vervoer! Vanaf Rotterdam Centraal is het Langepad bereikbaar met bus, tram en metro.
+              <ul>
+                <li><strong>Tram 7</strong> richting Woudestein, halte Boezemstraat. Vandaar ±10 min lopen.</li>
+                <li><strong>Metro</strong>: Lijn D of E richting Slinge/de Akkers, uitstappen Beurs. Overstappen op A/B/C richting de Terp/Binnenhof/Nesselande. Uitstappen Gerdesiaweg, ±15 min lopen.</li>
+              </ul>
+              Meer info: <a href="http://www.9292.nl" target="_blank">9292.nl</a> · <a href="http://www.ns.nl" target="_blank">ns.nl</a> · <a href="http://www.ret.nl" target="_blank">ret.nl</a>
+            </div>
+          </div>
+          <div class="transport-card" style="border-color:rgba(249,115,22,0.25);">
+            <div class="transport-title">🚗 Met de auto</div>
+            <div class="transport-text">
+              <strong style="color:var(--orange);">⚠️ Let op:</strong> NIET PARKEREN en GEEN in-/uitrijmogelijkheid op het terrein van PAC tussen 08:00 en 18:00!
+              Het Langepad langs PAC is ook niet beschikbaar — dit is onderdeel van het parcours.<br><br>
+              Beperkte parkeermogelijkheden:
+              <ul>
+                <li>Parkeerplaatsen aan het strandje van de Kralingse Plas</li>
+                <li>Industrieterrein Boezembocht (naast PAC)</li>
+                <li>Verderop in de wijk Kralingen-Crooswijk</li>
+              </ul>
+              Meer info betaald parkeren: <a href="http://www.rotterdam.nl/parkeren" target="_blank">rotterdam.nl/parkeren</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VRIJWILLIGERS -->
+      <div class="tab-panel" id="tab-vrijwilligers">
+        <div class="section-label">Draag bij</div>
+        <h2 class="section-title" style="margin-bottom:1rem;">Vrijwilli<span>gers</span></h2>
+        <p style="color:rgba(253,246,238,0.65);font-size:0.95rem;line-height:1.7;max-width:600px;margin-bottom:2rem;">
+          Niet lopen, wel meedoen? Dat kan! De Rotterdam Ekiden kan niet worden georganiseerd zonder enthousiaste vrijwilligers. 
+          Wil jij een bijdrage leveren? We hebben vrijwilligers nodig op de wedstrijddag én in de dagen ervoor.
+        </p>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;color:var(--cream);margin-bottom:0.75rem;">Wat doe je als vrijwilliger?</h3>
+        <ul class="vol-list">
+          <li>Inpakken van tasjes voor deelnemende teams</li>
+          <li>Opbouw of afbouw van het parcours</li>
+          <li>Regelen van de tassenuitgifte</li>
+          <li>Helpen als verkeersregelaar langs het parcours</li>
+          <li>Helpen bij de begeleiding van de start</li>
+          <li>Bemanning van een waterpost</li>
+        </ul>
+        <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;">
+          <a href="https://forms.gle/krT86TCRPGw7SQ3A7" target="_blank" class="btn btn-primary">Meld je aan als vrijwilliger</a>
+          <a href="mailto:crew@rotterdamekiden.nl?subject=Vrijwilligers" class="btn btn-outline">crew@rotterdamekiden.nl</a>
+        </div>
+      </div>
+
+      <!-- PARTNERS -->
+      <div class="tab-panel" id="tab-partners">
+        <div class="section-label">Mede mogelijk gemaakt door</div>
+        <h2 class="section-title" style="margin-bottom:2rem;">Onze <span>partners</span></h2>
+        <div class="partners-row">
+          <a href="https://linktmedia.nl/" target="_blank" class="partner-item">
+            <span>🔗</span> Linkt Media
+          </a>
+          <a href="https://runningambassadors.nl/" target="_blank" class="partner-item">
+            <span>🏃</span> Rotterdam Running Ambassadors
+          </a>
+        </div>
+        <p style="color:rgba(253,246,238,0.5);font-size:0.85rem;margin-top:2rem;">
+          Wil jij ook partner worden van de Rotterdam Ekiden? Neem contact op via <a href="mailto:info@rotterdamekiden.nl" style="color:var(--orange);">info@rotterdamekiden.nl</a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: INSCHRIJVEN
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-inschrijven">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label">Rotterdam Ekiden 2026</div>
+      <h1 class="section-title">In<span>schrijven</span></h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner">
+
+      <div class="notice reveal">
+        <strong>PAC Rotterdam Ekiden — 4 juli 2026</strong><br>
+        Verzamel een team en beleef de ultieme estafette-uitdaging! Inschrijvingen zijn open.
+      </div>
+
+      <div class="reveal">
+        <div class="section-label">Tarieven 2026</div>
+        <h2 class="section-title" style="margin-bottom:2rem;">Kies je <span>pakket</span></h2>
+      </div>
+
+      <div class="grid-2 reveal">
+        <div class="price-card">
+          <div class="price-name">Vroeg Tarief</div>
+          <div class="price-amount"><span>€</span>132</div>
+          <div class="price-label">per team (6 personen) — t/m 26 april</div>
+          <ul class="price-list">
+            <li>Deelname aan de Rotterdam Ekiden</li>
+            <li>Officieel Ekiden T-shirt voor alle teamleden (t/m 2 juni)</li>
+            <li>Tijdmeting via tag</li>
+            <li>Een dag om nooit te vergeten</li>
+          </ul>
+          <a href="https://inschrijven.nl/form/2026070409227-nl" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Nu inschrijven — vroeg tarief
+          </a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-name">Regulier Tarief</div>
+          <div class="price-amount"><span>€</span>146</div>
+          <div class="price-label">per team (6 personen) — vanaf 27 april</div>
+          <ul class="price-list">
+            <li>Deelname aan de Rotterdam Ekiden</li>
+            <li>Officieel Ekiden T-shirt voor alle teamleden (t/m 2 juni)</li>
+            <li>Tijdmeting via tag</li>
+            <li>Een dag om nooit te vergeten</li>
+          </ul>
+          <a href="https://inschrijven.nl/form/2026070409227-nl" target="_blank" class="btn btn-outline" style="width:100%;justify-content:center;">
+            Inschrijven →
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:3rem;">
+        <div class="notice">
+          ✔ <strong>Wil je meedoen als bedrijf?</strong> Bekijk onze speciale Business Run pakketten met extra's zoals paviljoen-toegang, lunch en diner.
+          <br>
+          <button onclick="showPage('business')" style="background:none;border:none;color:var(--orange);cursor:pointer;font-weight:600;font-size:0.9rem;padding:0;margin-top:0.5rem;">Bekijk Business Run →</button>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:2rem;">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.05em;color:var(--cream);margin-bottom:1rem;">Wat krijg je bij je inschrijving?</h3>
+        <div class="grid-3" style="gap:1rem;">
+          <div class="card">
+            <div class="card-icon">👕</div>
+            <h3>Officieel T-shirt</h3>
+            <p>Alle zes teamleden ontvangen een officieel Rotterdam Ekiden hardloopshirt (besteld t/m 2 juni).</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏅</div>
+            <h3>Tijdmeting</h3>
+            <p>Professionele tijdmeting via een tag. Jullie team- en individuele tijden worden officieel vastgelegd.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎉</div>
+            <h3>Onvergetelijke dag</h3>
+            <p>Een dag vol sport, teamspirit, barbecue en feest in het prachtige Kralingse Bos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:3rem;text-align:center;">
+        <p style="color:rgba(253,246,238,0.5);font-size:0.85rem;margin-bottom:1rem;">Volg ons voor het laatste nieuws</p>
+        <div style="display:flex;gap:1rem;justify-content:center;">
+          <a href="https://www.facebook.com/RotterdamEkiden/" target="_blank" class="social-btn">f</a>
+          <a href="https://www.instagram.com/rotterdamekiden/" target="_blank" class="social-btn">@</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: BUSINESS RUN
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-business">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label">Rotterdam Running Ambassadors</div>
+      <h1 class="section-title">Business <span>Run</span></h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner">
+
+      <div class="reveal">
+        <p class="section-lead">
+          Doe als team de marathon met je collega's! Een unieke kans om samen een sportieve en gezellige dag te beleven — elk niveau welkom.
+        </p>
+      </div>
+
+      <div class="notice reveal">
+        <strong>Wanneer & Waar?</strong><br>
+        Zaterdag 4 juli 2026 bij het Kralingse Bos.<br>
+        Start, wissel en finish op de atletiekbaan van Atletiekvereniging PAC, Langepad 16, 3062 CJ Rotterdam.
+      </div>
+
+      <div class="reveal" style="margin-bottom:3rem;">
+        <h2 class="section-title">Het Business <span>Paviljoen</span></h2>
+        <p style="color:rgba(253,246,238,0.65);font-size:0.95rem;line-height:1.7;max-width:600px;margin-top:0.75rem;">
+          Op de wedstrijddag word je ontvangen op het Business Paviljoen. Als team heb je een eigen tafel op de eerste rang van het spektakel. Er is een eigen bar en als team ontvang je consumptiebonnen. De start/finish en het wisselpunt is recht voor het paviljoen.
+        </p>
+      </div>
+
+      <div class="reveal">
+        <div class="section-label">Pakketten 2026</div>
+        <h2 class="section-title" style="margin-bottom:2rem;">Kies je <span>pakket</span></h2>
+      </div>
+
+      <div class="grid-2 reveal" style="gap:1.5rem;">
+        <div class="price-card">
+          <div class="price-name">Business Pakket</div>
+          <div class="price-amount"><span>€</span>400</div>
+          <div class="price-label">per bedrijfsteam (6 lopers)</div>
+          <ul class="price-list">
+            <li>Inschrijving als Business Team (6 lopers)</li>
+            <li>Officiële Rotterdam Ekiden hardloopshirts</li>
+            <li>2 consumptiebonnen per teamlid</li>
+            <li>Lunch voor alle lopers</li>
+            <li>Toegang tot het Business Paviljoen (lopers + 2 begeleiders)</li>
+            <li>Teamfoto als ultieme herinnering</li>
+          </ul>
+          <a href="mailto:business@rotterdamekiden.nl" class="btn btn-outline" style="width:100%;justify-content:center;">
+            Meer info →
+          </a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-name">Ekiden Business Pakket</div>
+          <div class="price-amount"><span>€</span>650</div>
+          <div class="price-label">per bedrijfsteam (6 lopers)</div>
+          <ul class="price-list">
+            <li>Inschrijving als Business Team (6 lopers)</li>
+            <li>Officiële Rotterdam Ekiden hardloopshirts</li>
+            <li>2 consumptiebonnen per teamlid</li>
+            <li>Lunch voor alle lopers</li>
+            <li>Toegang tot het Business Paviljoen (lopers + 2 begeleiders)</li>
+            <li>Luxe diner na afloop voor alle lopers</li>
+            <li>Teamfoto als ultieme herinnering</li>
+          </ul>
+          <a href="mailto:business@rotterdamekiden.nl" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Inschrijven
+          </a>
+        </div>
+      </div>
+
+      <div class="notice reveal" style="margin-top:2rem;">
+        Voor begeleiders is lunch en/of barbecue tegen kostprijs bij te bestellen via <a href="mailto:Business@rotterdamekiden.nl?subject=Begeleider extra" style="color:var(--orange);">Business@rotterdamekiden.nl</a> na inschrijving.
+      </div>
+
+      <div class="reveal" style="margin-top:3rem;">
+        <h2 class="section-title">Voor<span>bereiding</span></h2>
+        <p style="color:rgba(253,246,238,0.65);font-size:0.95rem;line-height:1.7;max-width:600px;margin:0.75rem 0 2rem;">
+          Neem deel aan twee trainingsmomenten georganiseerd door de Rotterdam Running Ambassadors (RRA):
+        </p>
+        <div class="grid-2" style="gap:1rem;">
+          <div class="card">
+            <div class="card-icon">📅</div>
+            <h3>Training 1</h3>
+            <p>Woensdag 14 mei — 19:15 op PAC Rotterdam.<br>Dynamische training gericht op teambuilding.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">📅</div>
+            <h3>Training 2</h3>
+            <p>Woensdag 18 juni — 19:15 op PAC Rotterdam.<br>Met tips van ervaren hardlopers en gecertificeerde trainers.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:3rem;padding:2rem;background:var(--card);border-radius:var(--radius);border:1px solid rgba(255,255,255,0.06);">
+        <div class="section-label">Rotterdam Running Ambassadors</div>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.05em;color:var(--cream);margin-bottom:0.75rem;">Het hardlopende businessnetwerk van Rotterdam</h3>
+        <p style="color:rgba(253,246,238,0.65);font-size:0.9rem;line-height:1.7;margin-bottom:1.25rem;">
+          Wil je kennismaken of meer te weten komen? De Business Run is onderdeel van de Rotterdam Ekiden, georganiseerd door Atletiekvereniging PAC.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+          <a href="https://runningambassadors.nl/contact" target="_blank" class="btn btn-outline">Meer info RRA →</a>
+          <a href="mailto:business@rotterdamekiden.nl" class="btn btn-primary">Contact opnemen</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: UITSLAGEN
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-uitslagen">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label">Alle edities</div>
+      <h1 class="section-title">Uit<span>slagen</span></h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="reveal">
+        <h2 class="section-title" style="margin-bottom:2rem;">Resultaten per <span>editie</span></h2>
+      </div>
+      <div class="results-grid reveal">
+        <div class="result-item">
+          <div>
+            <div class="result-year">2025</div>
+            <div style="font-size:0.8rem;color:rgba(253,246,238,0.45);">Laatste editie</div>
+          </div>
+          <div class="result-links">
+            <a href="https://my.raceresult.com/347239/results" target="_blank" class="result-link">Uitslagen 2025 →</a>
+          </div>
+        </div>
+        <div class="result-item">
+          <div><div class="result-year">2024</div></div>
+          <div class="result-links">
+            <a href="https://results.splittime.nl/Results/ShowEvent.aspx?EventID=757" target="_blank" class="result-link">Team</a>
+            <a href="https://results.splittime.nl/Results/ShowEvent.aspx?EventID=758" target="_blank" class="result-link">Individueel</a>
+          </div>
+        </div>
+        <div class="result-item">
+          <div><div class="result-year">2023</div></div>
+          <div class="result-links">
+            <a href="https://results.splittime.nl/Results/ShowEvent.aspx?EventID=664" target="_blank" class="result-link">Team</a>
+            <a href="https://www.rotterdamekiden.nl/_files/ugd/2b7b29_295e4ac4946b4bfab7992c087c00a95b.xls" target="_blank" class="result-link">Individueel (XLS)</a>
+          </div>
+        </div>
+        <div class="result-item">
+          <div><div class="result-year">2022</div></div>
+          <div class="result-links">
+            <a href="http://results.splittime.nl/Results/ShowEvent.aspx?EventID=558" target="_blank" class="result-link">Team</a>
+            <a href="http://results.splittime.nl/Results/ShowEvent.aspx?EventID=558" target="_blank" class="result-link">Individueel</a>
+          </div>
+        </div>
+        <div class="result-item">
+          <div><div class="result-year">2021</div></div>
+          <div class="result-links">
+            <a href="http://results.splittime.nl/Results/ShowEvent.aspx?EventID=385" target="_blank" class="result-link">Team</a>
+            <a href="http://results.splittime.nl/Results/ShowEvent.aspx?EventID=384" target="_blank" class="result-link">Individueel</a>
+          </div>
+        </div>
+        <div class="result-item">
+          <div><div class="result-year">2019</div></div>
+          <div class="result-links">
+            <a href="http://results.splittime.nl/Results/ShowEvent.aspx?EventID=285" target="_blank" class="result-link">Team</a>
+            <a href="http://results.splittime.nl/Results/ShowEvent.aspx?EventID=288" target="_blank" class="result-link">Individueel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: REGLEMENT
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-reglement">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label">Rotterdam Ekiden 2026</div>
+      <h1 class="section-title">Wedstrijd<span>reglement</span></h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner reveal">
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 1</div>
+        <div class="rule-title">Afstand</div>
+        <div class="rule-text">De gehele afstand (42,195 km) moet door 6 verschillende lopers worden afgelegd. De afstanden zijn respectievelijk 5, 10, 5, 10, 5 en 7,195 km. Het team loopt in de opgegeven volgorde — het laatste nummer op het startnummer geeft de volgorde aan. Indien dit niet gebeurt, kan een team gediskwalificeerd worden.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 2</div>
+        <div class="rule-title">Wijze van voortbewegen</div>
+        <div class="rule-text">Alle deelnemers dienen zich lopend voort te bewegen over het door de organisatie uitgezette parcours, op een voor de wegatletiek gebruikelijke wijze.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 3</div>
+        <div class="rule-title">Indeling in categorieën</div>
+        <div class="rule-text">
+          Er zijn vier categorieën:
+          <ul>
+            <li><strong>Business:</strong> teams bestaande uit werknemers van eenzelfde bedrijf of instelling</li>
+            <li><strong>Mannen:</strong> teams bestaande uit alleen heren</li>
+            <li><strong>Vrouwen:</strong> teams bestaande uit alleen dames</li>
+            <li><strong>Gemengd:</strong> teams bestaande uit minimaal 1 man en 1 vrouw</li>
+          </ul>
+          De organisatie behoudt zich het recht voor teams in een andere categorie in te delen.
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 4</div>
+        <div class="rule-title">Prijzen</div>
+        <div class="rule-text">Elke deelnemer die zich drie weken voor aanvang heeft ingeschreven ontvangt een T-shirt. Binnen iedere categorie worden ereprijzen uitgereikt. Deelnemende teams hebben geen recht op een prijs indien zij in strijd hebben gehandeld met het reglement.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 5</div>
+        <div class="rule-title">Startnummers</div>
+        <div class="rule-text">Ieder team ontvangt zes startnummers. Deze dienen duidelijk zichtbaar aan de voorzijde bevestigd te worden met vier veiligheidsspelden. Ze mogen niet worden afgesneden of gevouwen. Het is verboden andere startnummers te dragen dan die welke zijn verstrekt door de organisatie.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 6</div>
+        <div class="rule-title">Tijdsregistratie</div>
+        <div class="rule-text">De organisatie stelt de finishtijd en tussentijden vast — deze vaststelling is bindend. Tijdregistratie geschiedt via de tag. De tag dient op de juiste wijze gedragen te worden.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 7</div>
+        <div class="rule-title">Tasuki</div>
+        <div class="rule-text">Er wordt gebruik gemaakt van een sjerp, de Tasuki. Tijdens het lopen wordt de Tasuki kruislings over de schouder gedragen (zichtbaar op het lichaam), waarbij het losse uiteinde door de lus wordt gehaald. Het in de hand houden van de Tasuki tijdens het lopen is niet toegestaan en kan tot diskwalificatie leiden.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 8</div>
+        <div class="rule-title">Wisselen</div>
+        <div class="rule-text">De Tasuki wordt in het aangegeven wisselvak met de hand doorgegeven aan de volgende loper. Lopers 1 t/m 5 geven in het wisselvak de Tasuki over. Lopers moeten er zelf voor zorgen op tijd in het wisselvak aanwezig te zijn.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 9</div>
+        <div class="rule-title">Diskwalificatie</div>
+        <div class="rule-text">De organisatie is gerechtigd een deelnemer te diskwalificeren en/of uit de wedstrijd te halen indien deze het reglement overtreedt of zich onsportief of onbehoorlijk gedraagt, of indien zulks op medische of organisatorische gronden noodzakelijk is.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 10</div>
+        <div class="rule-title">Begeleiding</div>
+        <div class="rule-text">Begeleiding op het parcours (te voet of met vervoermiddel) is niet toegestaan zonder voorafgaande toestemming. Uitzondering: de laatste loper mag op de atletiekbaan door zijn teamgenoten vergezeld worden zodat zij gezamenlijk als team finishen.</div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">Artikel 11</div>
+        <div class="rule-title">Instructies wedstrijdleiding</div>
+        <div class="rule-text">Deelnemers dienen instructies op te volgen van de organisatie. De Wegenverkeerswet blijft op het gehele parcours van kracht. Het is niet toegestaan expliciet politieke, levensbeschouwelijke of religieuze denkbeelden uit te dragen of uitlatingen te doen die als aanstootgevend kunnen worden ervaren. De organisatie aanvaardt geen aansprakelijkheid voor verloren eigendommen.</div>
+      </div>
+
+      <div style="margin-top:2rem;padding:1.25rem 1.5rem;background:var(--card);border-radius:var(--radius);border:1px solid rgba(255,255,255,0.06);">
+        <p style="font-size:0.85rem;color:rgba(253,246,238,0.5);">Rotterdam, januari 2026. In alle overige gevallen, waarin dit reglement niet voorziet, beslist de organisatie.</p>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: FAQ
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-faq">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label">Laatste update: 01/07/2025</div>
+      <h1 class="section-title">Veelgestelde <span>vragen</span></h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner reveal">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Welke informatie is er voor teamcaptains en deelnemers?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Nuttige informatie voor teamcaptains en deelnemers is beschikbaar via de downloads onderaan deze pagina: de teamcaptains-informatie en de welkomsflyer voor de editie 2025.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Kan ik mijn inschrijving achteraf nog wijzigen?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Ja, de namen van deelnemers kunnen na inschrijving nog worden aangepast t/m 3 juli 2025 (23:59) en de shirtmaten t/m 2 juni 2025.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Zijn toeschouwers welkom op het PAC-terrein?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Ja, toeschouwers zijn van harte welkom op het PAC-terrein!</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Zijn er drankposten op het parcours?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Op 200 meter van de start/finish staat een drankpost voor de lopers. Daarnaast is er direct na de finish de mogelijkheid water te pakken. Eigen drinken is toegestaan, maar ruim je afval netjes op.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Kan ik mijn auto op het PAC-terrein parkeren?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Nee, dat is niet mogelijk vanwege de benodigde ruimte voor het evenement. Er is beperkte parkeergelegenheid bij de Kralingse Plas en in de wijk. Kom daarom zoveel mogelijk op de fiets of met het openbaar vervoer.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Wat zijn de openingstijden van het PAC-terrein?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Het PAC-terrein opent op zaterdag 4 juli om 9:00 en sluit om 20:00. De start van de wedstrijd is om 12:00. Zorg dat je ruim op tijd aanwezig bent.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Mag ik een partytent opzetten?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Het is toegestaan een partytent te plaatsen op aangewezen plekken, maar uitsluitend vanaf zaterdagochtend 9:00. Tenten plaatsen op vrijdagavond is niet toegestaan — zo geven we alle teams gelijke kansen op een mooi plekje.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Kan ik eten kopen op het terrein?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Op het terrein zijn foodtrucks aanwezig en een bar met frisdrank en bier. De kantine is ook open. Er is ook de mogelijkheid om een BBQ-buffet af te nemen.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Kan ik eigen consumpties meenemen en mogen er BBQ's mee?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Ja, het is toegestaan eigen consumpties mee te nemen — inclusief BBQ's. Ruim je afval netjes op. Er is ook de mogelijkheid een BBQ-buffet af te nemen via de organisatie.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Zijn de kleedkamers open?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Ja, de kleedkamers zijn gewoon open voor omkleden en/of douchen.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Zijn er toiletten aanwezig?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Er zijn voldoende mobiele toiletten op het PAC-terrein aanwezig, naast het Pac-O-Drome.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is er een teamcaptainsmeeting?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Nee, er is dit jaar geen teamcaptainsmeeting. Nadere informatie ontvang je per mail in de week voorafgaand aan de wedstrijd.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Kan ik een recordpoging doen?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a"><p>Helaas heeft de Atletiekunie per 1 januari 2020 besloten de records op een aantal nummers, waaronder de Ekiden, te bevriezen. Meer informatie vind je op de <a href="https://www.atletiek.nl/wedstrijdsport/nederlandse-records/overzicht-bevroren-records/" target="_blank">website van de Atletiekunie</a>.</p></div>
+      </div>
+
+      <div style="margin-top:2.5rem;padding:1.5rem;background:var(--card);border-radius:var(--radius);border:1px solid rgba(255,255,255,0.06);">
+        <p style="font-size:0.9rem;color:rgba(253,246,238,0.65);margin-bottom:1rem;">Meer vragen? Mail ons:</p>
+        <a href="mailto:info@rotterdamekiden.nl?subject=Vraag over Rotterdam Ekiden" class="btn btn-primary">info@rotterdamekiden.nl</a>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Rotterdam <span>Ekiden</span></div>
+  <div class="footer-links">
+    <button onclick="showPage('home')" style="background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(253,246,238,0.5);font-size:0.85rem;transition:color 0.3s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(253,246,238,0.5)'">Home</button>
+    <button onclick="showPage('info')" style="background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(253,246,238,0.5);font-size:0.85rem;transition:color 0.3s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(253,246,238,0.5)'">Info</button>
+    <button onclick="showPage('inschrijven')" style="background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(253,246,238,0.5);font-size:0.85rem;transition:color 0.3s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(253,246,238,0.5)'">Inschrijven</button>
+    <button onclick="showPage('business')" style="background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(253,246,238,0.5);font-size:0.85rem;transition:color 0.3s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(253,246,238,0.5)'">Business Run</button>
+    <button onclick="showPage('uitslagen')" style="background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(253,246,238,0.5);font-size:0.85rem;transition:color 0.3s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(253,246,238,0.5)'">Uitslagen</button>
+    <button onclick="showPage('reglement')" style="background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(253,246,238,0.5);font-size:0.85rem;transition:color 0.3s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(253,246,238,0.5)'">Reglement</button>
+    <button onclick="showPage('faq')" style="background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(253,246,238,0.5);font-size:0.85rem;transition:color 0.3s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='rgba(253,246,238,0.5)'">FAQ</button>
+  </div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/RotterdamEkiden/" target="_blank" class="social-btn" title="Facebook">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/rotterdamekiden/" target="_blank" class="social-btn" title="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+  </div>
+  <div class="footer-copy">© 2026 Rotterdam Ekiden · Atletiekvereniging PAC · Langepad 16, Rotterdam</div>
+</footer>
+
+<script>
+// ── PAGE NAVIGATION ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) { page.classList.add('active'); window.scrollTo(0,0); }
+  const navBtn = document.getElementById('nav-' + id);
+  if (navBtn) navBtn.classList.add('active');
+  // Trigger reveal on new page
+  setTimeout(observeReveal, 50);
+}
+
+// ── MOBILE MENU ──
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+
+// ── TABS ──
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('tab-' + id);
+  if (panel) panel.classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── FAQ ──
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ── SCROLL REVEAL ──
+function observeReveal() {
+  const reveals = document.querySelectorAll('.reveal:not(.visible)');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', observeReveal);
+</script>
+</body>
+</html>
