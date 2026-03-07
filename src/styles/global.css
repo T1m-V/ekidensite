@@ -331,14 +331,6 @@
   .price-card.featured {
     border-color: var(--orange);
   }
-  .price-card.featured::before {
-    content: 'AANBEVOLEN';
-    position: absolute; top: 1rem; right: -2.5rem;
-    background: var(--orange); color: white;
-    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
-    padding: 0.3rem 3rem;
-    transform: rotate(45deg);
-  }
   .price-amount {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 3.5rem; letter-spacing: 0.02em;
