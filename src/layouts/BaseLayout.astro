@@ -71,10 +71,29 @@ const baseUrl = import.meta.env.BASE_URL ?? "/";
       };
 
       window.showTab = function showTab(id) {
-        document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.remove("active"));
-        document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
+        const tabPanels = document.querySelectorAll(".tab-panel");
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        tabPanels.forEach((panel) => panel.classList.remove("active"));
+        tabButtons.forEach((btn) => btn.classList.remove("active"));
+
         const panel = document.getElementById(`tab-${id}`);
-        if (panel) panel.classList.add("active");
+        if (panel) {
+          panel.classList.add("active");
+          panel.classList.add("visible");
+        }
+
+        let targetButton = null;
+        tabButtons.forEach((btn) => {
+          if (btn.getAttribute("onclick") === `showTab('${id}')`) {
+            targetButton = btn;
+          }
+        });
+
+        if (targetButton) {
+          targetButton.classList.add("active");
+          return;
+        }
+
         const current = document.activeElement;
         if (current && current.classList && current.classList.contains("tab-btn")) {
           current.classList.add("active");
@@ -82,7 +101,7 @@ const baseUrl = import.meta.env.BASE_URL ?? "/";
       };
 
       window.toggleFaq = function toggleFaq(btn) {
-        const item = btn?.parentElement;
+        const item = btn && btn.parentElement;
         if (!item) return;
         const wasOpen = item.classList.contains("open");
         document.querySelectorAll(".faq-item").forEach((el) => el.classList.remove("open"));
@@ -91,6 +110,13 @@ const baseUrl = import.meta.env.BASE_URL ?? "/";
 
       function observeReveal() {
         const reveals = document.querySelectorAll(".reveal:not(.visible)");
+        if (!reveals.length) return;
+
+        if (typeof window.IntersectionObserver !== "function") {
+          reveals.forEach((el) => el.classList.add("visible"));
+          return;
+        }
+
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry, index) => {
