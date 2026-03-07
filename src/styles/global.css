@@ -198,6 +198,16 @@
     border-color: var(--orange); color: var(--orange);
     background: rgba(249,115,22,0.08);
   }
+  .btn-disabled,
+  .btn-disabled:hover {
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: rgba(253,246,238,0.55);
+    border-color: rgba(253,246,238,0.18);
+    background: transparent;
+    transform: none;
+    box-shadow: none;
+  }
   .hero-stats {
     display: flex; gap: 2.5rem; flex-wrap: wrap;
     margin-top: 3rem; padding-top: 2rem;
