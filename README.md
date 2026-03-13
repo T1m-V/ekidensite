@@ -17,6 +17,14 @@ npm run build
 npm run preview
 ```
 
+## Import legacy photos (one-time)
+
+```bash
+npm run import:legacy-images
+```
+
+This downloads the selected legacy assets from `static.wixstatic.com` into `public/images/legacy/`.
+
 ## Deploy on GitHub Pages
 
 1. Push this repository to GitHub.

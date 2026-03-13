@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "import:legacy-images": "powershell -ExecutionPolicy Bypass -File scripts/import-legacy-images.ps1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
